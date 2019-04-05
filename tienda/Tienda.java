@@ -1,22 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Mercado;
+package PruebaTienda;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.Scanner;
 
-/**
- *
- * @author maria
- */
-public class TiendaaCompletar {
+public class Tienda {
+    //Predone
     static Catalogo cat = new Catalogo();
     
     public static void main(String[] args) {
@@ -88,7 +77,7 @@ public class TiendaaCompletar {
                     if (tec.hasNext()) {
                         cantidad = tec.nextInt();
                         tec.nextLine();
-                        elem = new Producto(nombre, cantidad, precio);
+                        elem = new Producto(nombre, precio);
                         cat.add(elem);
 
                     }
@@ -104,7 +93,7 @@ public class TiendaaCompletar {
     private static Producto leerProducto() {
         Scanner tec = new Scanner(System.in);
         String nombre;
-        int cantidad;
+        //int cantidad;
         float precio;
         Producto elem;
 
@@ -112,48 +101,93 @@ public class TiendaaCompletar {
 
         precio = tec.nextFloat();
 
-        cantidad = tec.nextInt();
+        //cantidad = tec.nextInt();
         tec.nextLine();
-        elem = new Producto(nombre, cantidad, precio);
+        elem = new Producto(nombre, precio);
         return elem;
     }
 
-    static double venta() {
+//    static double venta() {
+//        int op;
+//        Scanner tec = new Scanner(System.in);
+//        Carrito carr = new Carrito();
+//        Producto p;
+//
+//        int cant;
+//        String nom;
+//        double totalVenta = 0;
+//        cat.ordenar(1);
+//        do {
+//            op = menu("1.Seleccionar producto \n2.Cancelar venta\n3.Finalizar venta", 3);
+//            switch (op) {
+//                case 1:
+//                    System.out.println(cat);
+//                    System.out.println("Nombre: ");
+//                    nom = tec.nextLine();
+//                    System.out.println("Cantidad");
+//                    cant = tec.nextInt();
+//                    tec.nextLine();
+//                    p = new Producto(nom, 0);
+//                    if ((p = cat.existe(p)) != null) {
+//
+//                        carr.anyadir(new Item(p, cant));
+//                    }
+//                    System.out.println(carr);
+//                    break;
+//                case 2:
+//                    carr.vaciar();
+//                    break;
+//                case 3:
+//                    System.out.println(carr);
+//                    totalVenta = carr.total();
+//                    carr.vaciar();
+//            }
+//        } while (op == 1);
+//        return totalVenta;
+//    }
+    
+    //New
+    private static double venta(){
+        Scanner teclado = new Scanner(System.in);
+        Carrito car = new Carrito();
+        double total = 0;
         int op;
-        Scanner tec = new Scanner(System.in);
-        Carrito carr = new Carrito();
-        Producto p;
-
-        int cant;
-        String nom;
-        double totalVenta = 0;
-        cat.ordenar(1);
         do {
-            op = menu("1.Seleccionar producto \n2.Cancelar venta\n3.Finalizar venta", 3);
-            switch (op) {
-                case 1:
-                    System.out.println(cat);
-                    System.out.println("Nombre: ");
-                    nom = tec.nextLine();
-                    System.out.println("Cantidad");
-                    cant = tec.nextInt();
-                    tec.nextLine();
-                    p = new Producto(nom, 0);
-                    if ((p = cat.existe(p)) != null) {
+            op = menu("1.Seleccionar producto\n2.Cancelar venta\n3.Finalizar venta", 3);
 
-                        carr.anyadir(new Item(p, cant));
+            switch(op){
+                case 1:
+                    System.out.print("¿Qué producto quieres comprar? ");
+                    String nom = teclado.nextLine().toLowerCase();
+                    int index = cat.get().indexOf(new Producto(nom));
+                    if (index == -1)
+                        System.out.printf("No hay %s en el catálogo\n", nom);
+                    else {
+                        System.out.printf("%s: %.2f€\n¿Cúantos quieres comprar?\n", nom, cat.get().get(index).getPrecio());
+                        int cant = Integer.parseInt(teclado.nextLine());
+                        double gastado = cant * cat.get().get(index).getPrecio();
+                        total += gastado;
+                        System.out.printf("%d comprados por %.2f€\n", cant, gastado);
+
+                        Item i = new Item(cat.get().get(index), cant);
+                        int indexItem = car.get().indexOf(i);
+                        if (indexItem == -1)
+                            car.add(i);
+                        else
+                            car.get().get(indexItem).addCant(cant);
                     }
-                    System.out.println(carr);
                     break;
                 case 2:
-                    carr.vaciar();
+                    System.out.println("Venta cancelada");
+                    total = 0;
                     break;
                 case 3:
-                    System.out.println(carr);
-                    totalVenta = carr.total();
-                    carr.vaciar();
+                    System.out.println("Venta completada");
+                    car.mostrar();
+                    break;
             }
         } while (op == 1);
-        return totalVenta;
+
+        return total;
     }
 }

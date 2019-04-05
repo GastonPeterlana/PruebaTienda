@@ -1,40 +1,46 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Mercado;
+package PruebaTienda;
 
-/**
- *
- * @author maria
- */
+import java.util.Objects;
 public class Item {
-    Producto p;
-    int cantidad ;
+    private Producto prod;
+    private int cantidad;
 
-    public Producto getP() {
-        return p;
+    public Item(Producto prod, int cantidad) {
+        this.prod = prod;
+        this.cantidad = cantidad;
     }
 
-    public void setP(Producto p) {
-        this.p = p;
+    public void addCant(int n) {
+        this.cantidad += n;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 53 * hash + Objects.hashCode(this.prod);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Item other = (Item) obj;
+        if (!Objects.equals(this.prod, other.prod)) {
+            return false;
+        }
+        return true;
+    }
+
+    public Producto getProd() {
+        return prod;
     }
 
     public int getCantidad() {
         return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public Item(Producto p, int cantidad) {
-        this.p = p;
-        this.cantidad = cantidad;
-    }
-    @Override
-    public String toString(){
-       return String.format("%20s %6.2f %4d", p.getNombre(),p.getPrecio(),cantidad);
     }
 }
