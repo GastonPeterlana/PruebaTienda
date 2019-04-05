@@ -49,5 +49,10 @@ public class Producto implements Comparable<Producto> {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s: %.2f€", this.nombre, this.precio);
+    }
     
 }

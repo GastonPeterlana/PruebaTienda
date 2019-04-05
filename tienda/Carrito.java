@@ -14,13 +14,17 @@ public class Carrito {
     }
 
     public void add(Item i){
-        items.add(i);
+        int index = items.indexOf(i);
+        if (index == -1)
+            items.add(i);
+        else
+            items.get(index).addCant(i.getCantidad());
     }
 
     public void mostrar(){
-        System.out.println("--------------------------------------");
+        System.out.println("---------------------------------");
         for (Item i : items) 
             System.out.printf("%s: %.2f€ --> %d (%.2f€)\n", i.getProd().getNombre(), i.getProd().getPrecio(), i.getCantidad(), i.getCantidad() * i.getProd().getPrecio());
-        System.out.println("--------------------------------------");
+        System.out.println("---------------------------------");
     }
 }
